@@ -1,0 +1,17 @@
+.login-view {
+  padding: 20vh 2rem 10vh;
+  margin: auto;
+  max-width: 35rem;
+}
+
+.login-view .heading {
+  font-weight: 500;
+  font-size: 2rem;
+  color: #333;
+}
+
+.login-view .description {
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 3rem;
+}
