@@ -3,6 +3,7 @@
   width: 100%;
   border: 0;
   padding: 1rem 0;
+  font-size: 1rem;
 }
 
 .login-form .field:focus {
@@ -11,7 +12,7 @@
 
 .login-form .line {
   width: 0;
-  height: 0.15rem;
+  height: 0.16rem;
   margin-bottom: 0.4rem;
   background: #6dc4eb;
   transition: 0.5s width ease-out;
@@ -21,14 +22,6 @@
   width: 100%;
 }
 
-.login-form .login-btn {
-  background: #6dc4eb;
-  width: auto;
-  border: 0;
-  font-weight: 500;
-  border-radius: 8px;
-  padding: 1rem 3rem;
-  color: #fff;
+.login-form .btn {
   margin-top: 3rem;
-  cursor: pointer;
 }

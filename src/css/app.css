@@ -3,3 +3,25 @@
   height: 100vh;
   overflow: hidden;
 }
+
+.btn {
+  background: #6dc4eb;
+  width: auto;
+  border: 0;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 1rem 3rem;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-prev {
+  display: inline-block;
+  background-color: #666;
+  mask: url('../assets/icons/angle-left.svg') no-repeat;
+  mask-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+}

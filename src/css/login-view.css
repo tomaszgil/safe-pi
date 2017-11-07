@@ -1,5 +1,5 @@
 .login-view {
-  padding: 20vh 2rem 10vh;
+  padding: 10vh 2rem 10vh;
   margin: auto;
   max-width: 35rem;
 }
@@ -14,4 +14,9 @@
   font-weight: 500;
   color: #666;
   margin-bottom: 3rem;
+}
+
+.login-view .btn-prev {
+  margin-left: -1rem;
+  margin-bottom: 2rem;
 }
