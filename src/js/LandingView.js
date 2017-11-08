@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../css/landing-view.css';
 
 class LandingView extends Component {
@@ -11,8 +11,8 @@ class LandingView extends Component {
           <p className="description">
             Let us protect your valuables
           </p>
-          <Link to='/login'>
-            <a href="login" className="btn">Login into your safe</a>
+          <Link to='/login' className="btn">
+            Login into your safe
           </Link>
         </div>
     );

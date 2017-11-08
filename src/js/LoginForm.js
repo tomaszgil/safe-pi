@@ -2,20 +2,54 @@ import React, { Component } from 'react';
 import '../css/login-form.css';
 
 class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      password: ''
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInputChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    if (this.state.username === "admin" &&
+        this.state.password === "admin") {
+      console.log("Logged in");
+      window.history.push('', 'Main app', '/main');
+    }
+  }
+
   render() {
     return (
-      <form className="login-form">
+      <form className="login-form" onSubmit={this.handleSubmit}>
         <input className="field"
                type="text"
-               name="name"
-               placeholder="User name"/>
+               name="username"
+               placeholder="User name"
+               value={this.state.username}
+               onChange={this.handleInputChange} />
         <div className="line" />
         <input className="field"
                type="password"
                name="password"
-               placeholder="Password" />
+               placeholder="Password"
+               value={this.state.password}
+               onChange={this.handleInputChange} />
         <div className="line" />
-        <input className="btn" type="submit" value="Login" />
+        <input className="btn"
+               type="submit"
+               value="Login"/>
       </form>
     );
   }

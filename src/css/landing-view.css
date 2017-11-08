@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+.landing-view .heading {
+  font-weight: 500;
+  font-size: 2rem;
+  color: #333;
+}
+
 .landing-icon {
   background-color: #6dc4eb;
   mask: url('../assets/icons/helm.svg') no-repeat;
