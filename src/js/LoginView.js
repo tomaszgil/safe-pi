@@ -4,15 +4,24 @@ import LoginForm from './LoginForm.js'
 import '../css/login-view.css';
 
 class LoginView extends Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+  }
+
+  componentDidMount() {
+    this.refs.wrapper.classList.add('mounted');
+  }
+
   render() {
     return (
-      <div className="login-view">
+      <div className="login-view" ref="wrapper">
         <Link to='/' className="btn-prev" />
         <h1 className="heading">Login</h1>
         <p className="description">
           Get into your safe dashboard.
         </p>
-        <LoginForm />
+        <LoginForm setAuth={this.props.setAuth}/>
       </div>
     );
   }

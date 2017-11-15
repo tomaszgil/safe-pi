@@ -25,8 +25,8 @@ class LoginForm extends Component {
 
     if (this.state.username === "admin" &&
         this.state.password === "admin") {
-      console.log("Logged!");
-      window.location.href = '/main';
+      this.props.setAuth(true);
+      window.location.href = '/dashboard';
     }
   }
 

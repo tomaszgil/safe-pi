@@ -2,6 +2,12 @@
   padding: 10vh 2rem 10vh;
   margin: auto;
   max-width: 35rem;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.login-view.mounted {
+  opacity: 1;
 }
 
 .login-view .heading {

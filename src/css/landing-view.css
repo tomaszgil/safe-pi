@@ -3,6 +3,12 @@
   margin: auto;
   max-width: 35rem;
   text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.landing-view.mounted {
+  opacity: 1;
 }
 
 .landing-view .heading {

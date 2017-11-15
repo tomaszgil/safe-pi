@@ -12,7 +12,7 @@
 
 .login-form .line {
   width: 0;
-  height: 0.16rem;
+  height: 0.2rem;
   margin-bottom: 0.4rem;
   background: #6dc4eb;
   transition: 0.5s width ease-out;
