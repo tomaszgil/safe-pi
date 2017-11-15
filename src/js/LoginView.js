@@ -6,7 +6,6 @@ import '../css/login-view.css';
 class LoginView extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
   }
 
   componentDidMount() {

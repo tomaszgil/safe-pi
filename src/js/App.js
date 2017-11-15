@@ -6,13 +6,18 @@ import LoginView from './LoginView';
 import Dashboard from './Dashboard';
 import '../css/app.css';
 
-function PrivateRoute ({component: Component, authed, ...rest}) {
+function PrivateRoute ({component: Component, getAuth, ...rest}) {
   return (
     <Route
       {...rest}
-      render={(props) => authed === true
-        ? <Component {...props} />
-        : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
+      render={(props) => {
+        console.log(getAuth());
+        if (getAuth() === true) {
+          return (<Component {...props} />);
+        } else {
+          return (<Redirect to={{pathname: '/login', state: {from: props.location}}} />);
+        }
+      }}
     />
   )
 }
@@ -26,6 +31,7 @@ class App extends Component {
     };
 
     this.setAuth = this.setAuth.bind(this);
+    this.getAuth = this.getAuth.bind(this);
   }
 
   setAuth(value=true) {
@@ -33,6 +39,11 @@ class App extends Component {
       authed: value
     });
     this.state.authed = value;
+    console.log("within app setter: " + this.state.authed);
+  }
+
+  getAuth() {
+    return this.state.authed;
   }
 
   render() {
@@ -42,7 +53,7 @@ class App extends Component {
           <Route exact path="/" component={LandingView} />
           <Route exact path="/login"
             render={() => <LoginView setAuth={this.setAuth}/>} />
-          <PrivateRoute authed={this.state.authed} path='/dashboard'
+          <PrivateRoute getAuth={this.getAuth} path='/dashboard'
             component={Dashboard} />
         </div>
       </Router>
