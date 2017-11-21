@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700');
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;

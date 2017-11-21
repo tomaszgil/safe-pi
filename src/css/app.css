@@ -1,6 +1,7 @@
 .app {
   width: 100vw;
   height: 100vh;
+  padding: 0 2rem;
   overflow: hidden;
 }
 
@@ -24,4 +25,5 @@
   mask-size: 4rem;
   width: 4rem;
   height: 4rem;
+  margin-left: -1rem;
 }

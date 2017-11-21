@@ -1,28 +1,14 @@
 .login-view {
-  padding: 10vh 2rem 10vh;
+  padding: 10vh 0;
   margin: auto;
   max-width: 35rem;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
 }
 
-.login-view.mounted {
-  opacity: 1;
-}
-
-.login-view .heading {
-  font-weight: 500;
+.login-view h3 {
   font-size: 2rem;
-  color: #333;
+  margin-top: 3rem;
 }
 
-.login-view .description {
-  font-weight: 500;
-  color: #666;
-  margin-bottom: 3rem;
-}
-
-.login-view .btn-prev {
-  margin-left: -1.4rem;
-  margin-bottom: 2rem;
+.login-view .login-form {
+  margin-top: 3rem;
 }

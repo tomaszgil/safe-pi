@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';
 import '../css/login-form.css';
+
 
 class LoginForm extends Component {
   constructor(props) {
@@ -14,6 +16,11 @@ class LoginForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  static createCookie() {
+    const cookies = new Cookies();
+    cookies.set('authenticated', true, { path: '/' });
+  }
+
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -25,9 +32,10 @@ class LoginForm extends Component {
 
     if (this.state.username === "admin" &&
         this.state.password === "admin") {
-      this.props.setAuth(true);
-      window.location.href = '/dashboard';
+      LoginForm.createCookie();
     }
+
+    window.location.href = '/dashboard';
   }
 
   render() {
@@ -48,8 +56,8 @@ class LoginForm extends Component {
                onChange={this.handleInputChange} />
         <div className="line" />
         <input className="btn"
-               type="submit"
-               value="Login"/>
+              type="submit"
+              value="Login" />
       </form>
     );
   }

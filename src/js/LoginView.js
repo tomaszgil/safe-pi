@@ -16,11 +16,11 @@ class LoginView extends Component {
     return (
       <div className="login-view" ref="wrapper">
         <Link to='/' className="btn-prev" />
-        <h1 className="heading">Login</h1>
+        <h3 className="heading">Login</h3>
         <p className="description">
           Get into your safe dashboard.
         </p>
-        <LoginForm setAuth={this.props.setAuth}/>
+        <LoginForm />
       </div>
     );
   }
