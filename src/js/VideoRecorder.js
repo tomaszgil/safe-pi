@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MediaCapturer from 'react-multimedia-capture';
 
 class VideoRecorder extends Component {
 	constructor() {
@@ -100,31 +99,6 @@ class VideoRecorder extends Component {
 		return (
 			<div ref="app">
 				<h3>Video Recorder</h3>
-				<MediaCapturer
-					constraints={{ audio: true, video: true }}
-					timeSlice={10}
-					onGranted={this.handleGranted}
-					onDenied={this.handleDenied}
-					onStart={this.handleStart}
-					onStop={this.handleStop}
-					onPause={this.handlePause}
-					onResume={this.handleResume}
-					onError={this.handleError}
-					render={({ start, stop, pause, resume }) =>
-					<div>
-						<p>Granted: {granted.toString()}</p>
-						<p>Rejected Reason: {rejectedReason}</p>
-						<p>Recording: {recording.toString()}</p>
-						<p>Paused: {paused.toString()}</p>
-						<button onClick={start}>Start</button>
-						<button onClick={stop}>Stop</button>
-						<button onClick={pause}>Pause</button>
-						<button onClick={resume}>Resume</button>
-
-						<p>Streaming test</p>
-						<video autoPlay></video>
-					</div>
-				} />
 			</div>
 		);
 	}
