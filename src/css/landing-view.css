@@ -1,0 +1,33 @@
+.landing-view {
+  padding: 25vh 0 10vh;
+  margin: auto;
+  max-width: 35rem;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.landing-view.mounted {
+  opacity: 1;
+}
+
+.landing-view .heading {
+  font-weight: 500;
+  font-size: 2rem;
+  color: #333;
+}
+
+.landing-icon {
+  background-color: #6dc4eb;
+  mask: url('../assets/icons/helm.svg') no-repeat;
+  mask-size: 5rem;
+  width: 5rem;
+  height: 5rem;
+  margin: 0 auto 2rem;
+}
+
+.landing-view .description {
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 6rem;
+}

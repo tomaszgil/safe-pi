@@ -1,0 +1,14 @@
+.login-view {
+  padding: 10vh 0;
+  margin: auto;
+  max-width: 35rem;
+}
+
+.login-view h3 {
+  font-size: 2rem;
+  margin-top: 3rem;
+}
+
+.login-view .login-form {
+  margin-top: 3rem;
+}
