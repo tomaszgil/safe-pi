@@ -46,14 +46,16 @@ class LoginForm extends Component {
                name="username"
                placeholder="User name"
                value={this.state.username}
-               onChange={this.handleInputChange} />
+               onChange={this.handleInputChange}
+               required />
         <div className="line" />
         <input className="field"
                type="password"
                name="password"
                placeholder="Password"
                value={this.state.password}
-               onChange={this.handleInputChange} />
+               onChange={this.handleInputChange}
+               required />
         <div className="line" />
         <input className="btn"
               type="submit"

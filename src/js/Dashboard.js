@@ -5,11 +5,9 @@ import '../css/dashboard.css';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleLogout() {
+  static handleLogout() {
     const cookies = new Cookies();
     cookies.remove('authenticated');
     window.location.href = '/';
@@ -19,7 +17,7 @@ class Dashboard extends Component {
     return (
       <div className="dashboard">
         <h1 className="heading">Dashboard</h1>
-        <button onClick={this.handleLogout}>Log out</button>
+        <button onClick={Dashboard.handleLogout}>Log out</button>
       </div>
     );
   }
