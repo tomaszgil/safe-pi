@@ -1,0 +1,32 @@
+.video-recorder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-recorder video {
+  width: 100%;
+  max-height: 100%;
+}
+
+.video-recorder .send {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translate(-50%);
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0.3rem white solid;
+}
+
+.video-recorder canvas {
+  display: none;
+}

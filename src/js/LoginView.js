@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import LoginForm from './LoginForm.js';
-import VideoRecorder from './VideoRecorder.js';
 import '../css/login-view.css';
 
 class LoginView extends Component {
@@ -22,7 +21,6 @@ class LoginView extends Component {
           Get into your safe dashboard.
         </p>
         <LoginForm />
-        <VideoRecorder />
       </div>
     );
   }

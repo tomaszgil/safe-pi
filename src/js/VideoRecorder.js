@@ -1,104 +1,87 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';
+import '../css/video-recorder.css';
 
 class VideoRecorder extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
+		this.localMediaStream = null;
+
 		this.state = {
-			granted: false,
-			rejectedReason: '',
-			recording: false,
-			paused: false
-		};
+		  capture: true
+    };
 
-		this.handleGranted = this.handleGranted.bind(this);
-		this.handleDenied = this.handleDenied.bind(this);
-		this.handleStart = this.handleStart.bind(this);
-		this.handleStop = this.handleStop.bind(this);
-		this.handlePause = this.handlePause.bind(this);
-		this.handleResume = this.handleResume.bind(this);
-		this.setStreamToVideo = this.setStreamToVideo.bind(this);
-		this.releaseStreamFromVideo = this.releaseStreamFromVideo.bind(this);
-		this.downloadVideo = this.downloadVideo.bind(this);
-	}
-	handleGranted() {
-		this.setState({ granted: true });
-		console.log('Permission Granted!');
-	}
-	handleDenied(err) {
-		this.setState({ rejectedReason: err.name });
-		console.log('Permission Denied!', err);
-	}
-	handleStart(stream) {
-		this.setState({
-			recording: true
-		});
+		this.init = this.init.bind(this);
+    this.handleReject = this.handleReject.bind(this);
+    this.takeSnapshot = this.takeSnapshot.bind(this);
 
-		this.setStreamToVideo(stream);
-		console.log('Recording Started.');
-	}
-	handleStop(blob) {
-		this.setState({
-			recording: false
-		});
-
-		this.releaseStreamFromVideo();
-
-		console.log('Recording Stopped.');
-		this.downloadVideo(blob);
+    this.init();
 	}
 
-	handlePause() {
-		this.releaseStreamFromVideo();
+	init() {
+    if (VideoRecorder.hasGetUserMedia()) {
+      navigator.getUserMedia =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
 
-		this.setState({
-			paused: true
-		});
-	}
+      navigator.getUserMedia({video: true}, (stream) => {
+        let video = document.querySelector('video');
+        video.src = window.URL.createObjectURL(stream);
+        this.localMediaStream = stream;
 
-	handleResume(stream) {
-		this.setStreamToVideo(stream);
+        video.onloadedmetadata = function(e) {
+          // Ready to go. Do some stuff.
+        };
+      }, this.handleReject);
+    } else {
+      alert('getUserMedia() is not supported in your browser');
+    }
+  }
 
-		this.setState({
-			paused: false
-		});
-	}
+  static hasGetUserMedia() {
+    return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia || navigator.msGetUserMedia);
+  }
 
-	handleError(err) {
-		console.log(err);
-	}
+  static createCookie() {
+    const cookies = new Cookies();
+    cookies.set('authenticated', true, { path: '/' });
+  }
 
-	setStreamToVideo(stream) {
-		let video = this.refs.app.querySelector('video');
+  takeSnapshot() {
+    const video = this.refs.video;
+    const canvas = this.refs.canvas;
+    const ctx = canvas.getContext('2d');
 
-		if(window.URL) {
-			video.src = window.URL.createObjectURL(stream);
-		}
-		else {
-			video.src = stream;
-		}
-	}
-	releaseStreamFromVideo() {
-		this.refs.app.querySelector('video').src = '';
-	}
-	downloadVideo(blob) {
-		let url = URL.createObjectURL(blob);
-		let a = document.createElement('a');
-		a.style.display = 'none';
-		a.href = url;
-		a.target = '_blank';
-		document.body.appendChild(a);
+    if (this.localMediaStream) {
+      ctx.drawImage(video, 0, 0);
+      this.refs.img.src = canvas.toDataURL('image/webp');
+    }
 
-		a.click();
-	}
+    this.setState({
+      capture: false
+    });
+
+    // call to backend instead
+    setTimeout(() => {
+      VideoRecorder.createCookie();
+      window.location.href = '/dashboard';
+    }, 5000);
+  }
+
+  handleReject(e) {
+    console.log('Reeeejected!', e);
+  }
+
 	render() {
-		const granted = this.state.granted;
-		const rejectedReason = this.state.rejectedReason;
-		const recording = this.state.recording;
-		const paused = this.state.paused;
-
 		return (
-			<div ref="app">
-				<h3>Video Recorder</h3>
+			<div className='video-recorder'>
+        <video autoPlay className={this.state.capture ? '' : 'is-hidden'} ref='video' />
+        <canvas ref='canvas' height='600' width='800' />
+        <img className={this.state.capture ? 'is-hidden' : ''} ref='img' />
+        <button className={this.state.capture ? 'send' : 'send is-hidden'} onClick={this.takeSnapshot}/>
 			</div>
 		);
 	}
