@@ -1,104 +1,107 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';
+import '../css/video-recorder.css';
 
 class VideoRecorder extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
+		this.localMediaStream = null;
+
 		this.state = {
-			granted: false,
-			rejectedReason: '',
-			recording: false,
-			paused: false
-		};
+		  capture: true,
+      rejected: false
+    };
 
-		this.handleGranted = this.handleGranted.bind(this);
-		this.handleDenied = this.handleDenied.bind(this);
-		this.handleStart = this.handleStart.bind(this);
-		this.handleStop = this.handleStop.bind(this);
-		this.handlePause = this.handlePause.bind(this);
-		this.handleResume = this.handleResume.bind(this);
-		this.setStreamToVideo = this.setStreamToVideo.bind(this);
-		this.releaseStreamFromVideo = this.releaseStreamFromVideo.bind(this);
-		this.downloadVideo = this.downloadVideo.bind(this);
-	}
-	handleGranted() {
-		this.setState({ granted: true });
-		console.log('Permission Granted!');
-	}
-	handleDenied(err) {
-		this.setState({ rejectedReason: err.name });
-		console.log('Permission Denied!', err);
-	}
-	handleStart(stream) {
-		this.setState({
-			recording: true
-		});
+		this.init = this.init.bind(this);
+    this.handleReject = this.handleReject.bind(this);
+    this.takeSnapshot = this.takeSnapshot.bind(this);
 
-		this.setStreamToVideo(stream);
-		console.log('Recording Started.');
-	}
-	handleStop(blob) {
-		this.setState({
-			recording: false
-		});
-
-		this.releaseStreamFromVideo();
-
-		console.log('Recording Stopped.');
-		this.downloadVideo(blob);
+    this.init();
 	}
 
-	handlePause() {
-		this.releaseStreamFromVideo();
+	componentWillMount() {
 
-		this.setState({
-			paused: true
-		});
-	}
+  }
 
-	handleResume(stream) {
-		this.setStreamToVideo(stream);
+	init() {
+    if (VideoRecorder.hasGetUserMedia()) {
+      navigator.getUserMedia =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
 
-		this.setState({
-			paused: false
-		});
-	}
+      navigator.getUserMedia({video: true}, (stream) => {
+        let video = document.querySelector('video');
+        video.src = window.URL.createObjectURL(stream);
+        this.localMediaStream = stream;
+      }, this.handleReject);
+    } else {
+      alert('getUserMedia() is not supported in your browser');
+    }
+  }
 
-	handleError(err) {
-		console.log(err);
-	}
+  static hasGetUserMedia() {
+    return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia || navigator.msGetUserMedia);
+  }
 
-	setStreamToVideo(stream) {
-		let video = this.refs.app.querySelector('video');
+  static createCookie() {
+    const cookies = new Cookies();
+    cookies.set('authenticated', true, { path: '/' });
+  }
 
-		if(window.URL) {
-			video.src = window.URL.createObjectURL(stream);
-		}
-		else {
-			video.src = stream;
-		}
-	}
-	releaseStreamFromVideo() {
-		this.refs.app.querySelector('video').src = '';
-	}
-	downloadVideo(blob) {
-		let url = URL.createObjectURL(blob);
-		let a = document.createElement('a');
-		a.style.display = 'none';
-		a.href = url;
-		a.target = '_blank';
-		document.body.appendChild(a);
+  takeSnapshot() {
+    const video = this.refs.video;
+    const canvas = this.refs.canvas;
+    const ctx = canvas.getContext('2d');
 
-		a.click();
-	}
+    if (this.localMediaStream) {
+      ctx.drawImage(video, 0, 0);
+      this.refs.img.src = canvas.toDataURL('image/webp');
+    }
+
+    this.setState({
+      capture: false
+    });
+
+    // TODO: call to backend instead
+    setTimeout(() => {
+      VideoRecorder.createCookie();
+      window.location.href = '/dashboard';
+    }, 9000);
+  }
+
+  handleReject(e) {
+    this.setState({
+      rejected: true
+    });
+  }
+
 	render() {
-		const granted = this.state.granted;
-		const rejectedReason = this.state.rejectedReason;
-		const recording = this.state.recording;
-		const paused = this.state.paused;
-
 		return (
-			<div ref="app">
-				<h3>Video Recorder</h3>
+			<div className='video-recorder'>
+        { this.state.rejected ?
+          <div>
+            <p className="reject">
+              Our app cannot function properly without access to the camera.
+              Please enable webcam on this website and refresh.
+            </p>
+          </div>
+          :
+          <div>
+            <canvas height='600' width='800' ref='canvas' />
+            <img ref='img' />
+            <video autoPlay className={this.state.capture ? '' : 'is-hidden'} ref='video' />
+            <button className={this.state.capture ? 'send' : 'send is-hidden'} onClick={this.takeSnapshot}/>
+            <div className={this.state.capture ? 'is-hidden' : ''}>
+              <div className="checking-icon" />
+              <h3 className="checking-message">We are checking your identity...</h3>
+              <p>Please wait.</p>
+            </div>
+          </div>
+        }
+
 			</div>
 		);
 	}

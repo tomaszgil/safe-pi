@@ -32,10 +32,12 @@ class LoginForm extends Component {
 
     if (this.state.username === "admin" &&
         this.state.password === "admin") {
-      LoginForm.createCookie();
-    }
+      // TODO: call to backend
 
-    window.location.href = '/dashboard';
+      window.location.href = '/camera';
+    } else {
+      window.location.href = '/dashboard';
+    }
   }
 
   render() {

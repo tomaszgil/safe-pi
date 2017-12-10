@@ -7,16 +7,14 @@ class AuthFailure extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.refs.wrapper.classList.add('mounted');
-  }
-
   render() {
     return (
-      <div className="login-view" ref="wrapper">
-        Failed
-        <Link to='/login' >
-          Powrót
+      <div className="auth-failure">
+        <div className="failure-icon" />
+        <h3>Authentication failed</h3>
+        <p>Try logging in again.</p>
+        <Link to='/login' className='btn' >
+          Go back
         </Link>
       </div>
     );

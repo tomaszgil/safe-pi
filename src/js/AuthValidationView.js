@@ -16,7 +16,7 @@ class AuthValidationView extends Component {
   render() {
     return (
       <div>
-        { AuthValidationView.checkAuth() ? <Dashboard/> : <AuthFailure /> }
+        { AuthValidationView.checkAuth() ? <Dashboard /> : <AuthFailure /> }
       </div>
     )
   }
