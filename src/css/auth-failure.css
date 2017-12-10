@@ -7,7 +7,7 @@
 
 .auth-failure .failure-icon {
   background-color: #c90f1d;
-  mask: url('../assets/icons/bell.svg') no-repeat;
+  mask: url('../assets/icons/close-circle.svg') no-repeat;
   mask-size: 5rem;
   width: 5rem;
   height: 5rem;
