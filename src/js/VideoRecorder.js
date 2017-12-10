@@ -30,10 +30,6 @@ class VideoRecorder extends Component {
         let video = document.querySelector('video');
         video.src = window.URL.createObjectURL(stream);
         this.localMediaStream = stream;
-
-        video.onloadedmetadata = function(e) {
-          // Ready to go. Do some stuff.
-        };
       }, this.handleReject);
     } else {
       alert('getUserMedia() is not supported in your browser');
@@ -64,11 +60,11 @@ class VideoRecorder extends Component {
       capture: false
     });
 
-    // call to backend instead
+    // TODO: call to backend instead
     setTimeout(() => {
       VideoRecorder.createCookie();
       window.location.href = '/dashboard';
-    }, 5000);
+    }, 9000);
   }
 
   handleReject(e) {
@@ -78,10 +74,15 @@ class VideoRecorder extends Component {
 	render() {
 		return (
 			<div className='video-recorder'>
+        <canvas height='600' width='800' ref='canvas' />
+        <img ref='img' />
         <video autoPlay className={this.state.capture ? '' : 'is-hidden'} ref='video' />
-        <canvas ref='canvas' height='600' width='800' />
-        <img className={this.state.capture ? 'is-hidden' : ''} ref='img' />
         <button className={this.state.capture ? 'send' : 'send is-hidden'} onClick={this.takeSnapshot}/>
+        <div className={this.state.capture ? 'is-hidden' : ''}>
+          <div className="checking-icon" />
+          <h3 className="checking-message">We are checking your identity...</h3>
+          <p>Please wait.</p>
+        </div>
 			</div>
 		);
 	}
