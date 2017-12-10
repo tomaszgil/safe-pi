@@ -13,5 +13,4 @@ Raspberry PI based project of a safe with an online dashboard.
 1. Install Python (version 2.7.14 or newer).
 2. Run `pip install -r requirements`.
 3. Complete 3 first steps from front-end dev environment installation.
-4. Run `yarn build`.
-5. Run `sh server.sh`.
+4. Run `sh server.sh`.
