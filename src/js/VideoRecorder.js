@@ -8,7 +8,8 @@ class VideoRecorder extends Component {
 		this.localMediaStream = null;
 
 		this.state = {
-		  capture: true
+		  capture: true,
+      rejected: false
     };
 
 		this.init = this.init.bind(this);
@@ -17,6 +18,10 @@ class VideoRecorder extends Component {
 
     this.init();
 	}
+
+	componentWillMount() {
+
+  }
 
 	init() {
     if (VideoRecorder.hasGetUserMedia()) {
@@ -68,21 +73,35 @@ class VideoRecorder extends Component {
   }
 
   handleReject(e) {
-    console.log('Reeeejected!', e);
+    this.setState({
+      rejected: true
+    });
   }
 
 	render() {
 		return (
 			<div className='video-recorder'>
-        <canvas height='600' width='800' ref='canvas' />
-        <img ref='img' />
-        <video autoPlay className={this.state.capture ? '' : 'is-hidden'} ref='video' />
-        <button className={this.state.capture ? 'send' : 'send is-hidden'} onClick={this.takeSnapshot}/>
-        <div className={this.state.capture ? 'is-hidden' : ''}>
-          <div className="checking-icon" />
-          <h3 className="checking-message">We are checking your identity...</h3>
-          <p>Please wait.</p>
-        </div>
+        { this.state.rejected ?
+          <div>
+            <p className="reject">
+              Our app cannot function properly without access to the camera.
+              Please enable webcam on this website and refresh.
+            </p>
+          </div>
+          :
+          <div>
+            <canvas height='600' width='800' ref='canvas' />
+            <img ref='img' />
+            <video autoPlay className={this.state.capture ? '' : 'is-hidden'} ref='video' />
+            <button className={this.state.capture ? 'send' : 'send is-hidden'} onClick={this.takeSnapshot}/>
+            <div className={this.state.capture ? 'is-hidden' : ''}>
+              <div className="checking-icon" />
+              <h3 className="checking-message">We are checking your identity...</h3>
+              <p>Please wait.</p>
+            </div>
+          </div>
+        }
+
 			</div>
 		);
 	}

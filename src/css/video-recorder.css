@@ -52,6 +52,10 @@
   text-align: center;
 }
 
+.video-recorder .reject {
+  padding: 0 2rem;
+}
+
 
 @keyframes spin {
   from {

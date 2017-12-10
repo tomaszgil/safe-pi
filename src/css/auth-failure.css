@@ -21,7 +21,6 @@
 }
 
 .auth-failure p {
-  color: #666;
-  font-weight: 500;
+  color: #222;
   margin-bottom: 5rem;
 }

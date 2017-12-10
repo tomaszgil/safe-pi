@@ -14,7 +14,7 @@ class AuthFailure extends Component {
         <h3>Authentication failed</h3>
         <p>Try logging in again.</p>
         <Link to='/login' className='btn' >
-          Powrót
+          Go back
         </Link>
       </div>
     );

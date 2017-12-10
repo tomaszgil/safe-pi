@@ -31,3 +31,7 @@
 .is-hidden {
   display: none !important;
 }
+
+p {
+  line-height: 1.5;
+}
