@@ -3,3 +3,17 @@
   margin: auto;
   max-width: 35rem;
 }
+
+.dashboard .logout {
+  background: #c90f1d;
+}
+
+.dashboard h4 {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.dashboard .btn {
+  width: 100%;
+}

@@ -16,6 +16,11 @@
   color: #fff;
   cursor: pointer;
   text-decoration: none;
+  min-width: 12rem;
+}
+
+.btn-secondary {
+  background: #bbb;
 }
 
 .btn-prev {
@@ -34,4 +39,9 @@
 
 p {
   line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-weight: 500;
+  color: #333;
 }
