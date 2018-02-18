@@ -83,7 +83,7 @@ def verify_password(token, img):
     if token == secret_token:
         return True
     else:
-        return recognize(0)
+        return recognize(img)
 
 
 @app.route('/', defaults={'path': ''})
