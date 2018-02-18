@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
+import Axios from 'axios';
 import '../css/dashboard.css';
 
 class Dashboard extends Component {
@@ -7,60 +8,147 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      safeOpened: this.isSafeOpened(),
-      alarmActive: this.isAlarmActive(),
+      safeOpened: false,
+      alarmActivated: false,
+      alert: false
     };
 
-    this.isAlarmActive = this.isAlarmActive.bind(this);
-    this.isSafeOpened = this.isSafeOpened.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.checkAlarmStatus = this.checkAlarmStatus.bind(this);
+    this.checkSafeStatus = this.checkSafeStatus.bind(this);
     this.closeSafe = this.closeSafe.bind(this);
     this.openSafe = this.openSafe.bind(this);
     this.activateAlarm = this.activateAlarm.bind(this);
     this.deactivateAlarm = this.deactivateAlarm.bind(this);
+
+    this.checkSafeStatus();
+    this.checkAlarmStatus();
   }
 
-  static handleLogout() {
+  static getToken() {
     const cookies = new Cookies();
-    cookies.remove('authenticated');
-    window.location.href = '/';
+    return cookies.get('token');
   }
 
-  isSafeOpened() {
-    // TODO perform check with backend
-    return false;
+  handleLogout() {
+    if (this.state.safeOpened) {
+      this.setState({
+        alert: true
+      });
+    } else {
+      const cookies = new Cookies();
+      cookies.remove('token');
+      window.location.href = '/';
+    }
   }
 
-  isAlarmActive() {
-    // TODO perfrom check with backend
-    return false;
+  checkSafeStatus() {
+    Axios.get('/api/safe_opened', {
+      token: Dashboard.getToken(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const { safeOpened } = data;
+          this.setState({
+            safeOpened: safeOpened
+          })
+        }
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  checkAlarmStatus() {
+    Axios.get('/api/alarm_activated', {
+      token: Dashboard.getToken(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const { alarmActivated } = data;
+          this.setState({
+            alarmActivated: alarmActivated
+          })
+        }
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   activateAlarm() {
-    // TODO perform action to backend
-    this.setState({
-      alarmActive: true
-    });
+    Axios.get('/api/activate_alarm', {
+      token: Dashboard.getToken(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const { alarmActivated } = data;
+          this.setState({
+            alarmActivated: alarmActivated
+          })
+        }
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   deactivateAlarm() {
-    // TODO perform action to backend
-    this.setState({
-      alarmActive: false
-    });
+    Axios.get('/api/deactivate_alarm', {
+      token: Dashboard.getToken(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const { alarmActivated } = data;
+          this.setState({
+            alarmActivated: alarmActivated
+          })
+        }
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   closeSafe() {
-    // TODO perform action to backend
-    this.setState({
-      safeOpened: false
-    });
+    Axios.get('/api/close_safe', {
+      token: Dashboard.getToken(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const { safeOpened } = data;
+          this.setState({
+            safeOpened: safeOpened,
+            alert: safeOpened
+          })
+        }
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   openSafe() {
-    // TODO perform action to backend
-    this.setState({
-      safeOpened: true
-    });
+    Axios.get('/api/open_safe', {
+      token: Dashboard.getToken(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const { safeOpened } = data;
+          this.setState({
+            safeOpened: safeOpened
+          })
+        }
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   render() {
@@ -76,17 +164,18 @@ class Dashboard extends Component {
             <button className="btn" onClick={this.openSafe}>Open safe</button>
         }
         <h4>Manage alarm</h4>
-        <p>Alarm currently <b>turned { this.state.alarmActive ? "on" : "off" }</b>.</p>
+        <p>Alarm currently <b>turned { this.state.alarmActivated ? "on" : "off" }</b>.</p>
         {
-          this.state.alarmActive ?
+          this.state.alarmActivated ?
             <button className="btn btn-secondary" onClick={this.deactivateAlarm}>Deactivate</button>
             :
             <button className="btn btn-secondary" onClick={this.activateAlarm}>Activate</button>
         }
-
         <h4>Manage account</h4>
-
-        <button className="btn logout" onClick={Dashboard.handleLogout}>Log out</button>
+        <button className="btn logout" onClick={this.handleLogout}>Log out</button>
+        {
+          this.state.alert ? <p className="alert">You have to lock the safe before logging out.</p> : null
+        }
       </div>
     );
   }

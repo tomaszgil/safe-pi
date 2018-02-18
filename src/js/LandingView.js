@@ -17,7 +17,7 @@ class LandingView extends Component {
 
   setRedirect() {
     const cookies = new Cookies();
-    if (cookies.get('authenticated')) {
+    if (cookies.get('token')) {
       this.redirect = '/dashboard';
     } else {
       this.redirect = '/login'

@@ -10,7 +10,7 @@ class AuthValidationView extends Component {
 
   static checkAuth() {
     const cookies = new Cookies();
-    return cookies.get('authenticated');
+    return cookies.get('token') !== undefined;
   }
 
   render() {

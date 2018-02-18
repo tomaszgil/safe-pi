@@ -17,3 +17,9 @@
 .dashboard .btn {
   width: 100%;
 }
+
+.dashboard .alert {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
