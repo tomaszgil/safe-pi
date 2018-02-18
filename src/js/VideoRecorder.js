@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
+import Axios from 'axios';
 import '../css/video-recorder.css';
 
 class VideoRecorder extends Component {
@@ -18,10 +19,6 @@ class VideoRecorder extends Component {
 
     this.init();
 	}
-
-	componentWillMount() {
-
-  }
 
 	init() {
     if (VideoRecorder.hasGetUserMedia()) {
@@ -46,9 +43,9 @@ class VideoRecorder extends Component {
       navigator.mozGetUserMedia || navigator.msGetUserMedia);
   }
 
-  static createCookie() {
+  static createCookie(token) {
     const cookies = new Cookies();
-    cookies.set('authenticated', true, { path: '/' });
+    cookies.set('token', token, { path: '/' });
   }
 
   takeSnapshot() {
@@ -65,11 +62,21 @@ class VideoRecorder extends Component {
       capture: false
     });
 
-    // TODO: call to backend instead
-    setTimeout(() => {
-      VideoRecorder.createCookie();
-      window.location.href = '/dashboard';
-    }, 9000);
+    Axios.get('/api/token', {
+      token: '',
+      img: canvas.toDataURL(),
+    })
+      .then(function (response) {
+        const { data } = response;
+        if (data) {
+          const {token} = data;
+          VideoRecorder.createCookie(token);
+        }
+        window.location.href = '/dashboard';
+      })
+      .catch(function (error) {
+        window.location.href = '/dashboard';
+      });
   }
 
   handleReject(e) {

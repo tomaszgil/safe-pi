@@ -16,11 +16,6 @@ class LoginForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  static createCookie() {
-    const cookies = new Cookies();
-    cookies.set('authenticated', true, { path: '/' });
-  }
-
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value
