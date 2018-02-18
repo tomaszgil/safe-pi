@@ -8,6 +8,7 @@ auth = HTTPBasicAuth()
 
 # Mocked behavior
 secret_token = "emVEQwsePJp9dm6F"
+# TODO check current state of safe
 safe_opened = False
 alarm_activated = True
 

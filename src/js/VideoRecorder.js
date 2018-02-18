@@ -64,7 +64,7 @@ class VideoRecorder extends Component {
 
     Axios.get('/api/token', {
       token: '',
-      img: 0,
+      img: canvas.toDataURL(),
     })
       .then(function (response) {
         const { data } = response;
