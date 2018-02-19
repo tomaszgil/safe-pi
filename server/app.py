@@ -21,6 +21,11 @@ reference_img = 0
 
 def recognize(img):
     # TODO perform face recognition with img and reference image
+	
+    img = img[22:]
+    img = decode_base64(img) #padding moze byc
+    img = np.frombuffer(img, dtype=np.uint8)
+	
     return True
 
 
