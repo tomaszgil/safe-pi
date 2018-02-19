@@ -3,6 +3,8 @@ from flask import Flask, abort, request, render_template, jsonify
 from flask_httpauth import HTTPBasicAuth
 from requests import get
 import sys
+import numpy as np
+import base64
 
 
 app = Flask(__name__, template_folder='../build', static_folder='../build/static')
@@ -19,6 +21,17 @@ alarm_activated = True
 # Face recognition
 reference_img = 0
 
+def decode_base64(data):
+    """Decode base64, padding being optional.
+
+    :param data: Base64 data as an ASCII byte string
+    :returns: The decoded byte string.
+
+    """
+    missing_padding = len(data) % 4
+    if missing_padding != 0:
+        data += b'='* (4 - missing_padding)
+    return base64.decodestring(data)
 
 def recognize(img):
     # TODO perform face recognition with img and reference image
