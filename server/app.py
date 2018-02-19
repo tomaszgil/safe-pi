@@ -1,6 +1,7 @@
 from __future__ import print_function
 from flask import Flask, abort, request, render_template, jsonify
 from flask_httpauth import HTTPBasicAuth
+from requests import get
 import sys
 
 
@@ -44,7 +45,9 @@ def get_auth_token():
 @app.route('/api/safe_opened')
 @auth.login_required
 def is_safe_opened():
-    # TODO check if safe is opened
+    r = get('http://192.168.1.155:6000/safe_opened')
+    state = r.content
+    print(state, file=sys.stderr)
     return jsonify({'safeOpened': safe_opened})
 
 
