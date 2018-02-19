@@ -27,8 +27,6 @@ class LoginForm extends Component {
 
     if (this.state.username === "admin" &&
         this.state.password === "admin") {
-      // TODO: call to backend
-
       window.location.href = '/camera';
     } else {
       window.location.href = '/dashboard';

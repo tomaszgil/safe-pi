@@ -55,28 +55,33 @@ class VideoRecorder extends Component {
 
     if (this.localMediaStream) {
       ctx.drawImage(video, 0, 0);
-      this.refs.img.src = canvas.toDataURL('image/webp');
-    }
+      const data = canvas.toDataURL();
+      this.refs.img.src = data;
 
-    this.setState({
-      capture: false
-    });
-
-    Axios.get('/api/token', {
-      token: '',
-      img: canvas.toDataURL(),
-    })
-      .then(function (response) {
-        const { data } = response;
-        if (data) {
-          const {token} = data;
-          VideoRecorder.createCookie(token);
-        }
-        window.location.href = '/dashboard';
-      })
-      .catch(function (error) {
-        window.location.href = '/dashboard';
+      this.setState({
+        capture: false
       });
+
+      Axios({
+        method: 'get',
+        url: '/api/token',
+        auth: {
+          username: '', // token
+          password: data // image
+        }
+      })
+        .then(function (response) {
+          const { data } = response;
+          if (data) {
+            const {token} = data;
+            VideoRecorder.createCookie(token);
+          }
+          window.location.href = '/dashboard';
+        })
+        .catch(function (error) {
+          window.location.href = '/dashboard';
+        });
+    }
   }
 
   handleReject(e) {

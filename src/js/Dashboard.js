@@ -43,8 +43,13 @@ class Dashboard extends Component {
   }
 
   checkSafeStatus() {
-    Axios.get('/api/safe_opened', {
-      token: Dashboard.getToken(),
+    Axios({
+      method: 'get',
+      url: '/api/safe_opened',
+      auth: {
+        username: Dashboard.getToken(), // token
+        password: '' // image
+      }
     })
       .then(function (response) {
         const { data } = response;
@@ -61,8 +66,13 @@ class Dashboard extends Component {
   }
 
   checkAlarmStatus() {
-    Axios.get('/api/alarm_activated', {
-      token: Dashboard.getToken(),
+    Axios({
+      method: 'get',
+      url: '/api/alarm_activated',
+      auth: {
+        username: Dashboard.getToken(), // token
+        password: '' // image
+      }
     })
       .then(function (response) {
         const { data } = response;
@@ -79,8 +89,13 @@ class Dashboard extends Component {
   }
 
   activateAlarm() {
-    Axios.get('/api/activate_alarm', {
-      token: Dashboard.getToken(),
+    Axios({
+      method: 'get',
+      url: '/api/activate_alarm',
+      auth: {
+        username: Dashboard.getToken(), // token
+        password: '' // image
+      }
     })
       .then(function (response) {
         const { data } = response;
@@ -97,8 +112,13 @@ class Dashboard extends Component {
   }
 
   deactivateAlarm() {
-    Axios.get('/api/deactivate_alarm', {
-      token: Dashboard.getToken(),
+    Axios({
+      method: 'get',
+      url: '/api/deactivate_alarm',
+      auth: {
+        username: Dashboard.getToken(), // token
+        password: '' // image
+      }
     })
       .then(function (response) {
         const { data } = response;
@@ -115,8 +135,13 @@ class Dashboard extends Component {
   }
 
   closeSafe() {
-    Axios.get('/api/close_safe', {
-      token: Dashboard.getToken(),
+    Axios({
+      method: 'get',
+      url: '/api/close_safe',
+      auth: {
+        username: Dashboard.getToken(), // token
+        password: '' // image
+      }
     })
       .then(function (response) {
         const { data } = response;
@@ -134,8 +159,13 @@ class Dashboard extends Component {
   }
 
   openSafe() {
-    Axios.get('/api/open_safe', {
-      token: Dashboard.getToken(),
+    Axios({
+      method: 'get',
+      url: '/api/open_safe',
+      auth: {
+        username: Dashboard.getToken(), // token
+        password: '' // image
+      }
     })
       .then(function (response) {
         const { data } = response;

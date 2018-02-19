@@ -1,5 +1,8 @@
+from __future__ import print_function
 from flask import Flask, render_template, jsonify
 from flask_httpauth import HTTPBasicAuth
+import sys
+
 
 app = Flask(__name__, template_folder='../build', static_folder='../build/static')
 
@@ -81,8 +84,10 @@ def deactivate_alarm():
 @auth.verify_password
 def verify_password(token, img):
     if token == secret_token:
+        print("Authenticated using token", file=sys.stderr)
         return True
     else:
+        print("Authenticated using image", file=sys.stderr)
         return recognize(img)
 
 
