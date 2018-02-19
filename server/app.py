@@ -19,9 +19,6 @@ secret_token = "emVEQwsePJp9dm6F"
 safe_opened = False
 alarm_activated = False
 
-# Face recognition
-reference_img = 0
-
 
 def decode_base64(data):
     """Decode base64, padding being optional.
@@ -50,8 +47,10 @@ def get_auth_token():
     img = request.json.get('img')
     if recognize(img):
         print("Authenticated using image", file=sys.stderr)
+        get('http://192.168.1.155:6000/login_success')
         return jsonify({'token': secret_token})
     else:
+        get('http://192.168.1.155:6000/login_failure')
         abort(400)
 
 
@@ -60,8 +59,6 @@ def get_auth_token():
 def is_safe_opened():
     global safe_opened
     r = get('http://192.168.1.155:6000/safe_opened')
-    print("Safe ", file=sys.stderr)
-    print(r.status_code, file=sys.stderr)
     if r.status_code == 200:
         safe_opened = True
     if r.status_code == 400:
@@ -139,16 +136,12 @@ if __name__ == '__main__':
     global safe_opened
     global alarm_activated
     r = get('http://192.168.1.155:6000/safe_opened')
-    print("Safe ", file=sys.stderr)
-    print(r.status_code, file=sys.stderr)
     if r.status_code == 200:
         safe_opened = True
     if r.status_code == 400:
         safe_opened = False
 
     r = get('http://192.168.1.155:6000/alarm_activated')
-    print("Alarm ", file=sys.stderr)
-    print(r.status_code, file=sys.stderr)
     if r.status_code == 200:
         alarm_activated = True
     if r.status_code == 400:
