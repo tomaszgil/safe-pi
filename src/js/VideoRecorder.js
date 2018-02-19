@@ -55,19 +55,18 @@ class VideoRecorder extends Component {
 
     if (this.localMediaStream) {
       ctx.drawImage(video, 0, 0);
-      const data = canvas.toDataURL();
-      this.refs.img.src = data;
+      const imageData = canvas.toDataURL();
+      this.refs.img.src = imageData;
 
       this.setState({
         capture: false
       });
 
       Axios({
-        method: 'get',
+        method: 'post',
         url: '/api/token',
-        auth: {
-          username: '', // token
-          password: data // image
+        data: {
+          img: imageData
         }
       })
         .then(function (response) {

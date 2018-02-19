@@ -1,5 +1,5 @@
 from __future__ import print_function
-from flask import Flask, render_template, jsonify
+from flask import Flask, abort, request, render_template, jsonify
 from flask_httpauth import HTTPBasicAuth
 import sys
 
@@ -25,10 +25,15 @@ def recognize(img):
 
 
 # REST server paths
-@app.route('/api/token')
-@auth.login_required
+@app.route('/api/token', methods=['POST'])
 def get_auth_token():
-    return jsonify({'token': secret_token})
+    img = request.json.get('img')
+    print(img, file=sys.stderr)
+    if recognize(img):
+        print("Authenticated using image", file=sys.stderr)
+        return jsonify({'token': secret_token})
+    else:
+        abort(400)
 
 
 @app.route('/api/safe_opened')
@@ -82,13 +87,9 @@ def deactivate_alarm():
 
 
 @auth.verify_password
-def verify_password(token, img):
-    if token == secret_token:
-        print("Authenticated using token", file=sys.stderr)
-        return True
-    else:
-        print("Authenticated using image", file=sys.stderr)
-        return recognize(img)
+def verify_password(token, unused):
+    print("Authenticated using token", file=sys.stderr)
+    return token == secret_token
 
 
 @app.route('/', defaults={'path': ''})
