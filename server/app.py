@@ -91,8 +91,6 @@ def close_safe():
 def is_alarm_activated():
     global alarm_activated
     r = get('http://192.168.1.155:6000/alarm_activated')
-    print("Alarm ", file=sys.stderr)
-    print(r.status_code, file=sys.stderr)
     if r.status_code == 200:
         alarm_activated = True
     if r.status_code == 400:
