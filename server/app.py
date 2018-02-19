@@ -14,12 +14,14 @@ auth = HTTPBasicAuth()
 
 # Mocked behavior
 secret_token = "emVEQwsePJp9dm6F"
-# TODO check current state of safe
+
+# Globals for state
 safe_opened = False
-alarm_activated = True
+alarm_activated = False
 
 # Face recognition
 reference_img = 0
+
 
 def decode_base64(data):
     """Decode base64, padding being optional.
@@ -33,13 +35,12 @@ def decode_base64(data):
         data += b'='* (4 - missing_padding)
     return base64.decodestring(data)
 
+
 def recognize(img):
     # TODO perform face recognition with img and reference image
-	
     img = img[22:]
     img = decode_base64(img) #padding moze byc
     img = np.frombuffer(img, dtype=np.uint8)
-	
     return True
 
 
@@ -47,7 +48,6 @@ def recognize(img):
 @app.route('/api/token', methods=['POST'])
 def get_auth_token():
     img = request.json.get('img')
-    print(img, file=sys.stderr)
     if recognize(img):
         print("Authenticated using image", file=sys.stderr)
         return jsonify({'token': secret_token})
@@ -58,52 +58,68 @@ def get_auth_token():
 @app.route('/api/safe_opened')
 @auth.login_required
 def is_safe_opened():
+    global safe_opened
     r = get('http://192.168.1.155:6000/safe_opened')
-    state = r.content
-    print(state, file=sys.stderr)
+    print("Safe ", file=sys.stderr)
+    print(r.status_code, file=sys.stderr)
+    if r.status_code == 200:
+        safe_opened = True
+    if r.status_code == 400:
+        safe_opened = False
     return jsonify({'safeOpened': safe_opened})
 
 
 @app.route('/api/open_safe')
 @auth.login_required
 def open_safe():
-    # TODO try to open safe
     global safe_opened
-    safe_opened = True
+    r = get('http://192.168.1.155:6000/gpio/open_safe')
+    if r.status_code == 200:
+        safe_opened = True
     return jsonify({'safeOpened': safe_opened})
 
 
 @app.route('/api/close_safe')
 @auth.login_required
 def close_safe():
-    # TODO try to close safe
     global safe_opened
-    safe_opened = False
+    r = get('http://192.168.1.155:6000/gpio/close_safe')
+    if r.status_code == 200:
+        safe_opened = False
     return jsonify({'safeOpened': safe_opened})
 
 
 @app.route('/api/alarm_activated')
 @auth.login_required
 def is_alarm_activated():
-    # TODO check if alarm is activated
+    global alarm_activated
+    r = get('http://192.168.1.155:6000/alarm_activated')
+    print("Alarm ", file=sys.stderr)
+    print(r.status_code, file=sys.stderr)
+    if r.status_code == 200:
+        alarm_activated = True
+    if r.status_code == 400:
+        alarm_activated = False
     return jsonify({'alarmActivated': alarm_activated})
 
 
 @app.route('/api/activate_alarm')
 @auth.login_required
 def activate_alarm():
-    # TODO try to activate alarm
     global alarm_activated
-    alarm_activated = True
+    r = get('http://192.168.1.155:6000/gpio/activate_alarm')
+    if r.status_code == 200:
+        alarm_activated = True
     return jsonify({'alarmActivated': alarm_activated})
 
 
 @app.route('/api/deactivate_alarm')
 @auth.login_required
 def deactivate_alarm():
-    # TODO try to deactivate alarm
     global alarm_activated
-    alarm_activated = False
+    r = get('http://192.168.1.155:6000/gpio/deactivate_alarm')
+    if r.status_code == 200:
+        alarm_activated = False
     return jsonify({'alarmActivated': alarm_activated})
 
 
@@ -120,4 +136,23 @@ def catch_all(path):
 
 
 if __name__ == '__main__':
+    global safe_opened
+    global alarm_activated
+    r = get('http://192.168.1.155:6000/safe_opened')
+    print("Safe ", file=sys.stderr)
+    print(r.status_code, file=sys.stderr)
+    if r.status_code == 200:
+        safe_opened = True
+    if r.status_code == 400:
+        safe_opened = False
+
+    r = get('http://192.168.1.155:6000/alarm_activated')
+    print("Alarm ", file=sys.stderr)
+    print(r.status_code, file=sys.stderr)
+    if r.status_code == 200:
+        alarm_activated = True
+    if r.status_code == 400:
+        alarm_activated = False
+
     app.run(debug=True)
+
