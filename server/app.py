@@ -5,7 +5,10 @@ from requests import get
 import sys
 import numpy as np
 import base64
-
+import cv2
+import face
+import config
+import time
 
 app = Flask(__name__, template_folder='../build', static_folder='../build/static')
 
@@ -34,11 +37,35 @@ def decode_base64(data):
 
 
 def recognize(img):
-    # TODO perform face recognition with img and reference image
+  
+    global model
     img = img[22:]
-    img = decode_base64(img) #padding moze byc
+    img = decode_base64(img)
     img = np.frombuffer(img, dtype=np.uint8)
-    return True
+	
+    img = cv2.imdecode(img, 1)
+    image = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    
+    result = face.detect_single(image)
+    if result is None:
+        print('Could not detect single face!')
+        return False
+    x, y, w, h = result
+    crop = face.resize(face.crop(image, x, y, w, h))
+    
+    label, confidence = model.predict(crop)
+    if label == config.POSITIVE_LABEL:
+        print('Predicted POSITIVE face with confidence ')
+        print(confidence)
+    else:
+        print('Predicted NEGATIVE face with confidence ')
+        print(confidence)
+    if label == config.POSITIVE_LABEL and confidence < config.POSITIVE_THRESHOLD:
+        print('Recognized face!')
+        return True
+    else:
+        print('Did not recognize face!')
+    return False
 
 
 # REST server paths
@@ -131,6 +158,10 @@ def catch_all(path):
 
 
 if __name__ == '__main__':
+   
+    model = cv2.createEigenFaceRecognizer()
+    model.load(config.TRAINING_FILE)
+	
     global safe_opened
     global alarm_activated
     r = get('http://192.168.1.155:6000/safe_opened')
